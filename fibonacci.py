@@ -5,8 +5,8 @@ def fibonacci(n):
             result.append(result[i-1] + result[i])
         else:
             result.append(1)
-    print(result)
-fibonacci(1)
-fibonacci(2)
-fibonacci(3)
-fibonacci(10)
+    return result
+print(fibonacci(1))
+print(fibonacci(2))
+print(fibonacci(3))
+print(fibonacci(10))
