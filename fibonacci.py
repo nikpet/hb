@@ -6,7 +6,8 @@ def fibonacci(n):
         else:
             result.append(1)
     return result
-print(fibonacci(1))
-print(fibonacci(2))
-print(fibonacci(3))
-print(fibonacci(10))
+if __name__ == "__main__":
+    print(fibonacci(1))
+    print(fibonacci(2))
+    print(fibonacci(3))
+    print(fibonacci(10))
