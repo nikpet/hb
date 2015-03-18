@@ -1,4 +1,4 @@
-from palindrom import palindrome
+from palindrome import palindrome
 
 
 def p_score(n):
