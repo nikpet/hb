@@ -1,11 +1,5 @@
 def unique_words_count(arr):
-    words_seen = []
-    unique_words = 0
-    for word in arr:
-        if word not in words_seen:
-            words_seen.append(word)
-            unique_words += 1
-    return unique_words
+    return len(set(arr))
 
 
 if __name__ == '__main__':
