@@ -30,8 +30,8 @@ def goldbach(n):
     while i < n:
         j = i
         while j < n:
-            if i + j == n: 
-                result.append((i,j))
+            if i + j == n:
+                result.append((i, j))
             j = next_prime(j)
         i = next_prime(i)
     return result
