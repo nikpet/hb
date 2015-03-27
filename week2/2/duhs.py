@@ -10,7 +10,6 @@ def main():
     for file in file_list:
         size += path.getsize(directory + file)
     metric = 0
-    print(size)
     while size // 1024 > 0:
         size = size / 1024
         metric += 1
