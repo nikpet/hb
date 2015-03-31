@@ -61,5 +61,27 @@ class BankAccountTest(unittest.TestCase):
         self.bank_account.deposit(deposited_ammount)
         self.assertIn('Deposited 100$', self.bank_account.actions_list)
 
+    def test_history_balance_check(self):
+        self.bank_account.get_balance()
+        self.assertIn('Balance check -> 50$', self.bank_account.actions_list)
+
+    def test_history_int_check(self):
+        int(self.bank_account)
+        self.assertIn('__int__ check -> 50$', self.bank_account.actions_list)
+
+    def test_history_withdraw_success(self):
+        self.bank_account.withdraw(20)
+        self.assertIn('20$ was withdrawed', self.bank_account.actions_list)
+
+    def test_history_withdraw_fail(self):
+        self.bank_account.withdraw(500)
+        self.assertIn('Withdraw for {}$ failed.'.format(500), self.bank_account.actions_list)
+
+    def test_history_transfer(self):
+        second_account = BankAccount('Ivan', 500, '$')
+        self.bank_account.transfer_to(second_account, 20)
+        self.assertIn('Transfer to Ivan for 20$', self.bank_account.actions_list)
+        self.assertIn('Transfer from Name for 20$', second_account.actions_list)
+
 if __name__ == '__main__':
     unittest.main()
