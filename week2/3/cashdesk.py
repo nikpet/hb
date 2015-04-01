@@ -81,13 +81,13 @@ class CashDesk:
 # print(desk.total())
 # desk.inspect()
 ########################################
-values = [10, 20, 50, 100]
-bills = [Bill(value) for value in values]
-
-batch = BillBatch(bills)
-
-for bill in batch:
-    print(bill)
+# values = [10, 20, 50, 100]
+# bills = [Bill(value) for value in values]
+#
+# batch = BillBatch(bills)
+#
+# for bill in batch:
+#     print(bill)
 ########################################
 # a = Bill(10)
 # b = Bill(5)
