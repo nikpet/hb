@@ -1,4 +1,5 @@
 class Bill:
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -12,10 +13,10 @@ class Bill:
         return self.amount
 
     def __eq__(self, other):
-        return self.amount == other.amount
+        return int(self) == int(other)
 
     def __hash__(self):
-        return hash(self.amont)
+        return hash(self.amount)
 
 
 class BillBatch:
@@ -38,7 +39,6 @@ class BillBatch:
 class CashDesk:
     def __init__(self):
         self.bills = {}
-        self.values = {}
 
     def take_money(self, money):
         if isinstance(money, Bill):
@@ -49,22 +49,17 @@ class CashDesk:
 
     def _add(self, money):
         if money in self.bills:
-            self.bills[money] += 1
-            self.values[int(money)] += 1
+            self.bills[int(money)] += 1
         else:
-            self.bills[money] = 1
-            self.values[int(money)] = 1
-
-    def test(self):
-        return self.bills
+            self.bills[int(money)] = 1
 
     def total(self):
-        return sum([x * y for x, y in self.values.items()])
+        return sum([x * y for x, y in self.bills.items()])
 
     def inspect(self):
         print('We have a total of {}$ in the desk'.format(self.total()))
         print('We have the following count of bills, sorted in ascending order:')
-        bills_list = [[x, y] for x, y in self.values.items()]
+        bills_list = [[x, y] for x, y in self.bills.items()]
         for item in sorted(bills_list):
             print("{}$ bills - {}".format(str(item[0]), str(item[1])))
 
