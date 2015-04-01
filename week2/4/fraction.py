@@ -53,9 +53,9 @@ class Fraction:
         return self.__str__()
 
 
-a = Fraction(2, 4)
-b = Fraction(1, 2)
-print(a == b)
-print(a + b)
-print(a - b)
-print(a * b)
+# a = Fraction(2, 4)
+# b = Fraction(1, 2)
+# print(a == b)
+# print(a + b)
+# print(a - b)
+# print(a * b)
