@@ -37,3 +37,6 @@ class BankAccount:
             self.actions_list.append('Transfer to {} for {}{}'.format(account.name, ammount, self.currency))
             account.actions_list.append('Transfer from {} for {}{}'.format(self.name, ammount, self.currency))
         return result
+
+    def history(self):
+       return self.actions_list 
