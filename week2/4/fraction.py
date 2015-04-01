@@ -1,5 +1,7 @@
 class Fraction:
     def __init__(self, numerator, denominator):
+        if denominator == 0:
+            raise ValueError
         self.numerator = numerator
         self.denominator = denominator
         self._simplify()
@@ -10,6 +12,8 @@ class Fraction:
             if a % i == 0 and b % i == 0:
                 common_factor = i
                 break
+        if common_factor == 1:
+            return a * b
         return common_factor
 
     def __add__(self, other):
@@ -24,9 +28,9 @@ class Fraction:
         if self.denominator == other.denominator:
             return Fraction(self.numerator - other.numerator, self.denominator)
         else:
-            return (self.numerator * other.denominator -
-                    self.denominator * other.numerator,
-                    self.denominator * other.denominator)
+            return Fraction(self.numerator * other.denominator -
+                            self.denominator * other.numerator,
+                            self.denominator * other.denominator)
 
     def __mul__(self, other):
         return Fraction(self.numerator * other.numerator,
@@ -34,7 +38,7 @@ class Fraction:
 
     def _simplify(self):
         gcd = self._gcd(self.numerator, self.denominator)
-        if gcd != 1:
+        if gcd != self.numerator * self.denominator:
             self.numerator = self.numerator // gcd
             self.denominator = self.denominator // gcd
 
