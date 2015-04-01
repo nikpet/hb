@@ -23,7 +23,7 @@ class BillBatch:
         self.bills = bills
 
     def __len__(self):
-        return len(self, bills)
+        return len(self.bills)
 
     def total(self):
         total_sum = 0
