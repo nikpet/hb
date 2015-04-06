@@ -34,5 +34,9 @@ class Panda:
     def is_female(self):
         return self.sex == "female"
 
+    def __str__(self):
+        return 'Panda("{}", "{}", "{}")'.format(self.name, self.email, self.sex)
+
+
 if __name__ == '__main__':
     print(hash(Panda('name', 'e@mail.cc', 'male')))
