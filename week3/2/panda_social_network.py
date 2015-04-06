@@ -80,4 +80,19 @@ class PandaSocialNetwork:
             return False
 
     def how_many_gender_in_network(self, level, panda, gender):
-        pass
+        queue = [panda]
+        visited = {panda}
+        lvl = 0
+        while len(queue) > 0:
+            lvl += 1
+            current = queue.pop(0)
+            for friend in self.network[current]:
+                if friend not in visited:
+                    visited.add(friend)
+                    if lvl < level:
+                        queue.append(friend)
+        count = 0
+        for item in visited:
+            if item.sex == gender:
+                count += 1
+        return count
