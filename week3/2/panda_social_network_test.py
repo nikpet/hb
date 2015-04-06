@@ -53,13 +53,13 @@ class PandaSocialNetworkTest(unittest.TestCase):
         panda2 = self._new_panda(1)
         panda3 = self._new_panda(2)
         panda4 = self._new_panda(3)
+        panda5 = self._new_panda(4)
         self.network.add_friends(self.panda, panda2)
         self.network.add_friends(panda2, panda3)
         self.network.add_friends(panda3, panda4)
+        self.network.add_panda(panda5)
+        self.assertEqual(self.network.connection_level(self.panda, panda5), 0)
         self.assertEqual(self.network.connection_level(self.panda, panda4), 3)
-        self.network.network = {}
-        self.assertEqual(self.network.connection_level(self.panda, panda2), -1)
-        panda2 = self._new_panda(1)
 
     def test_are_connected(self):
         panda2 = self._new_panda(1)
