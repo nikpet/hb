@@ -97,6 +97,26 @@ class PandaSocialNetworkTest(unittest.TestCase):
         self.assertEqual(self.network.how_many_gender_in_network(1, self.panda, 'male'), 2)
         self.assertEqual(self.network.how_many_gender_in_network(4, self.panda, 'male'), 3)
 
+    def test_save(self):
+        panda2 = self._new_panda(1)
+        panda3 = self._new_panda(2)
+        panda4 = self._new_panda(3)
+        panda5 = self._new_panda(4)
+        panda6 = self._new_panda(5)
+        panda7 = self._new_panda(6)
+        panda8 = self._new_male_panda(7)
+        panda9 = self._new_male_panda(8)
+        self.network.add_friends(self.panda, panda2)
+        self.network.add_friends(panda2, panda3)
+        self.network.add_friends(panda2, panda6)
+        self.network.add_friends(panda2, panda7)
+        self.network.add_friends(panda3, panda4)
+        self.network.add_friends(panda4, panda5)
+        self.network.add_friends(self.panda, panda8)
+        self.network.add_friends(panda7, panda9)
+        self.network.save("jj.json")
+
+
 
 if __name__ == '__main__':
     unittest.main()
