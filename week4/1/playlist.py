@@ -1,7 +1,7 @@
 from random import shuffle
 from tabulate import tabulate
 from song import Song
-from json import dump, load
+import json
 
 
 class Playlist:
@@ -53,7 +53,10 @@ class Playlist:
             self.play_list = self.volt[:]
             if self.shuffle:
                 shuffle(self.play_list)
-        return self.play_list.pop(0)
+        next_song = self.play_list.pop(0)
+        if self.repeat:
+            self.play_list.append(next_song)
+        return next_song
 
     def pprint_playlist(self):
         print(tabulate([[x.artist, x.title, x.length()] for x in self.volt],
@@ -61,16 +64,18 @@ class Playlist:
 
     def save(self):
         f = open(self.name.replace(' ', '-') + '.json', 'w')
-        dump({'repeat': self.repeat, 'shuffle': self.shuffle, 'volt': [repr(x) for x in self.volt]}, f)
+        json.dump({'repeat': self.repeat, 'shuffle': self.shuffle,
+                   'volt': [repr(x) for x in self.volt]}, f)
         f.close()
 
     @staticmethod
     def load(path):
         f = open(path)
-        playlist_data = load(f)
+        playlist_data = json.load(f)
         f.close()
         name = path.replace('-', ' ')
-        playlist = Playlist(name, playlist_data['repeat'], playlist_data['shuffle'])
+        playlist = Playlist(name, playlist_data['repeat'],
+                            playlist_data['shuffle'])
         songs = [eval(x) for x in playlist_data['volt']]
         playlist.add_songs(songs)
         return playlist
