@@ -1,6 +1,6 @@
 class Song:
     def __init__(self, title, artist, album, length):
-        self.title = title
+        self.title = title.replace("'", "")
         self.artist = artist
         self.album = album
         self.song_length = 0
