@@ -33,11 +33,64 @@ class PlaylistTest(unittest.TestCase):
         self.playlist.remove_song(self.song_a1_1)
         self.assertNotIn(self.song_a1_1, self.playlist.volt)
 
+    def test_add_songs(self):
+        song_list = [self.song_a1_1, self.song_a1_2, self.song_a1_3]
+        self.playlist.add_songs(song_list)
+        self.assertEqual(song_list, self.playlist.volt)
+
     def test_total_length(self):
         self.playlist.add_song(self.song_a1_1)
         self.playlist.add_song(self.song_a1_2)
         self.playlist.add_song(self.song_a1_3)
-        self.assertEqual(self.playlist.total_length(), '3:00')
+        self.playlist.add_song(Song('', '', '', '1:01:02'))
+        self.assertEqual(self.playlist.total_length(), '1:04:02')
+
+    def test_artists(self):
+        self.playlist.add_song(self.song_a1_1)
+        self.playlist.add_song(self.song_a1_2)
+        self.playlist.add_song(self.song_a1_3)
+        self.playlist.add_song(self.song_a2_2)
+        self.playlist.add_song(self.song_a3_3)
+        self.assertEqual(self.playlist.artists(), {'artist1': 3, 'artist2': 1,
+                                                   'artist3': 1})
+
+    def test_next_song_repeat(self):
+        self.playlist = Playlist('name', repeat=True)
+        self.playlist.add_song(self.song_a1_1)
+        self.playlist.add_song(self.song_a1_2)
+        self.assertEqual(self.playlist.next_song(), self.song_a1_1)
+        self.assertEqual(self.playlist.next_song(), self.song_a1_2)
+        self.assertEqual(self.playlist.next_song(), self.song_a1_1)
+        self.assertEqual(self.playlist.next_song(), self.song_a1_2)
+        self.assertEqual(self.playlist.next_song(), self.song_a1_1)
+
+    def test_next_song_shuffle(self):
+        self.playlist = Playlist('name', shuffle=True)
+        song_list = [self.song_a1_1, self.song_a1_2, self.song_a1_3]
+        self.playlist.add_songs(song_list)
+        played = []
+        for i in range(3):
+            played.append(self.playlist.next_song())
+        for song in played:
+            played.remove(song)
+            song_list.remove(song)
+        self.assertEqual(song_list, played)
+
+    # def test_prety_print(self):
+    #     song_list = [self.song_a1_1, self.song_a1_2, self.song_a1_3,
+    #                  self.song_a2_2, self.song_a3_3]
+    #     self.playlist.add_songs(song_list)
+    #     self.playlist.pprint_playlist()
+
+    def test_save(self):
+        song_list = [self.song_a1_1, self.song_a1_2, self.song_a1_3,
+                     self.song_a2_2, self.song_a3_3]
+        self.playlist.add_songs(song_list)
+        self.playlist.save()
+
+    def tets_load(self):
+        print(Playlist.load('name.json'))
+
 
 
 if __name__ == '__main__':
