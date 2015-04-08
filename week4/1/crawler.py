@@ -16,10 +16,11 @@ class MusicCrawler:
                 if name.lower().endswith(self.ext):
                     meta = MP3(os.path.join(root, name))
                     artist = meta['TPE1']
-                    title = meta['TIT2']
+                    title = str(meta['TIT2'])
                     album = meta['TALB']
                     length = meta.info.length
-                    song = Song(title, artist, album, self._prety_length(int(length)))
+                    song = Song(title, artist, album,
+                                self._prety_length(int(length)))
                     playlist.add_song(song)
         return playlist
 
@@ -36,4 +37,6 @@ class MusicCrawler:
 
 if __name__ == '__main__':
     m = MusicCrawler('/home/nikpet/mp_test/')
-    m.generate_playlist().pprint_playlist()
+    playlist = m.generate_playlist()
+    playlist.save()
+    print(playlist.load('name.json').name)
