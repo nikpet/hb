@@ -74,6 +74,8 @@ class Playlist:
         playlist_data = json.load(f)
         f.close()
         name = path.replace('-', ' ')
+        if name.endswith('.json'):
+            name = name[:-5]
         playlist = Playlist(name, playlist_data['repeat'],
                             playlist_data['shuffle'])
         songs = [eval(x) for x in playlist_data['volt']]
