@@ -4,9 +4,12 @@ class DirectedGraph():
 
     def add_edge(self, node_a, node_b):
         if node_a in self.graph:
-            self.graph[node_a].append(node_b)
+            if node_b not in self.graph[node_a]:
+                self.graph[node_a].append(node_b)
         else:
             self.graph[node_a] = [node_b]
+        if node_b not in self.graph:
+            self.graph[node_b] = []
 
     def get_neighbors_for(self, node):
         return self.graph[node]
