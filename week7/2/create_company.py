@@ -11,7 +11,7 @@ def main():
     CREATE TABLE employees (
     id INTEGER PRIMARY KEY,
     name TEXT,
-    montly_salary INTEGER,
+    monthly_salary INTEGER,
     yearly_bonus INTEGER,
     position TEXT)
     """
