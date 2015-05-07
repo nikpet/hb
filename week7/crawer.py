@@ -43,6 +43,17 @@ class Crawer:
             clean_server = server_name[0:server_name.index('/')]
         return clean_server
 
+    def save(self, file_name="crawed_servers.json"):
+        with open(file_name, 'w') as fd:
+            json.dump(self.servers.get_dict(), fd)
+
+    @staticmethod
+    def load(file_name="crawed_servers.json"):
+        with open(file_name, 'r') as fd:
+            hist = Histogram()
+            hist.vault = json.load(fd)
+        return hist
+
 
 if __name__ == '__main__':
     c = Crawer()
