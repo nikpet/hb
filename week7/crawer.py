@@ -35,6 +35,13 @@ class Crawer:
             #     pass
             except Exception:
                 pass
+        self.save()
+
+    def clean(self, server_name):
+        clean_server = server_name
+        if '/' in server_name:
+            clean_server = server_name[0:server_name.index('/')]
+        return clean_server
 
 
 if __name__ == '__main__':
