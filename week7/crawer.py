@@ -11,15 +11,22 @@ class Crawer:
         self.our_headers = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36"}
         request = requests.get("http://register.start.bg", headers=self.our_headers)
         soup = BeautifulSoup(request.text)
-        for link in soup.find_all(href=re.compile('link.php'), limit=1):
+        for link in soup.find_all(href=re.compile('link.php')):
             self.links.append(link.get('href'))
 
     def craw(self):
         for link in self.links:
-            self.browsers.append(requests.head(self.uri + link, headers=self.our_headers).headers['Server'])
-        return self.browsers
+            new_url = requests.head(self.uri + link, headers=self.our_headers).headers['Location']
+            try:
+                server = requests.head(new_url, timeout=2).headers['server']
+                self.browsers.append(server)
+                print(server)
+            except requests.exceptions.RequestException:
+                pass
+            except KeyError:
+                pass
 
 
 if __name__ == '__main__':
     c = Crawer()
-    print(c.craw())
+    c.craw()
