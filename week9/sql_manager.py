@@ -101,7 +101,7 @@ def login(username, password):
 
     if(user):
         if user['login_attempts'] > 5:
-            if time.time() - float(user['last_login_attempt']) < 3:
+            if time.time() - float(user['last_login_attempt']) < 300:
                 raise BruteForce()
             else:
                 reset_failed_login(username)
