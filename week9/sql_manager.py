@@ -47,9 +47,13 @@ def register(username, password):
 
 
 def login(username, password):
-    select_query = "SELECT id, username, balance, message FROM clients WHERE username = '%s' AND password = '%s' LIMIT 1" % (username, password)
-    
-    cursor.execute(select_query)
+    select_query = """
+        SELECT id, username, balance, message
+        FROM clients
+        WHERE username = ? AND password = ?
+        LIMIT 1
+    """
+    cursor.execute(select_query, (username, password))
     user = cursor.fetchone()
 
     if(user):
