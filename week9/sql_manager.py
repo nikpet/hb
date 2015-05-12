@@ -58,7 +58,7 @@ def is_strong(password):
 
 
 def hash_pass(password):
-    return sha1(password.encode())
+    return sha1(password.encode()).hexdigest()
 
 
 def change_pass(new_pass, logged_user):
@@ -68,7 +68,7 @@ def change_pass(new_pass, logged_user):
         WHERE id = ?
     """
     if is_strong(new_pass):
-        cursor.execute(update_sql, (new_pass, logged_user.get_id()))
+        cursor.execute(update_sql, (hash_pass(new_pass), logged_user.get_id()))
         conn.commit()
         return True
     else:
@@ -81,7 +81,7 @@ def register(username, password):
         VALUES (?, ?)
     """
     if is_strong(password):
-        cursor.execute(insert_sql, (username, password))
+        cursor.execute(insert_sql, (username, hash_pass(password)))
         conn.commit()
         return True
     else:
@@ -108,7 +108,7 @@ def login(username, password):
                 log_failed_login(username)
                 raise LoginFailed()
 
-        if user['password'] == password:
+        if user['password'] == hash_pass(password):
             reset_failed_login(username)
             return Client(user['id'], user['username'], user['balance'],
                           user['message'])
