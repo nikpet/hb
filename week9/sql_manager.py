@@ -38,8 +38,11 @@ def change_pass(new_pass, logged_user):
 
 
 def register(username, password):
-    insert_sql = "insert into clients (username, password) values ('%s', '%s')" % (username, password)
-    cursor.execute(insert_sql)
+    insert_sql = """
+        INSERT INTO clients (username, password)
+        VALUES (?, ?)
+    """
+    cursor.execute(insert_sql, (username, password))
     conn.commit()
 
 
