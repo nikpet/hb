@@ -1,6 +1,7 @@
 import sqlite3
 from Client import Client
 import re
+from hashlib import sha1
 
 conn = sqlite3.connect("bank.db")
 cursor = conn.cursor()
@@ -41,6 +42,10 @@ def is_strong(password):
             \}\[\]\:\;\"\'\\\?\/\>\<\,\.]""", password):
         return False
     return True
+
+
+def hash_pass(password):
+    return sha1(password.encode())
 
 
 def change_pass(new_pass, logged_user):
