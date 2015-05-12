@@ -3,18 +3,18 @@ import sql_manager
 
 def main_menu():
     print("Welcome to our bank service. You are not logged in. \nPlease register or login")
-    
+
     while True:
         command = input("$$$>")
-        
+
         if command == 'register':
             username = input("Enter your username: ")
             password = input("Enter your password: ")
 
             sql_manager.register(username, password)
-            
+
             print("Registration Successfull")
-        
+
         elif command == 'login':
             username = input("Enter your username: ")
             password = input("Enter your password: ")
@@ -25,7 +25,7 @@ def main_menu():
                 logged_menu(logged_user)
             else:
                 print("Login failed")
-        
+
         elif command == 'help':
             print("login - for logging in!")
             print("register - for creating new account!")
@@ -54,7 +54,7 @@ def logged_menu(logged_user):
         elif command == 'change-message':
             new_message = input("Enter your new message: ")
             sql_manager.change_message(new_message, logged_user)
-        
+
         elif command == 'show-message':
             print(logged_user.get_message())
 
