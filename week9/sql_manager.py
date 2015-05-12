@@ -17,8 +17,12 @@ def create_clients_table():
 
 
 def change_message(new_message, logged_user):
-    update_sql = "UPDATE clients SET message = '%s' WHERE id = '%s'" % (new_message, logged_user.get_id())
-    cursor.execute(update_sql)
+    update_sql = """
+        UPDATE clients
+        SET message = ?
+        WHERE id = ?
+        """
+    cursor.execute(update_sql, (new_message, logged_user.get_id()))
     conn.commit()
     logged_user.set_message(new_message)
 
