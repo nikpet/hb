@@ -21,15 +21,19 @@ def change_message(new_message, logged_user):
         UPDATE clients
         SET message = ?
         WHERE id = ?
-        """
+    """
     cursor.execute(update_sql, (new_message, logged_user.get_id()))
     conn.commit()
     logged_user.set_message(new_message)
 
 
 def change_pass(new_pass, logged_user):
-    update_sql = "UPDATE clients SET password = '%s' WHERE id = '%s'" % (new_pass, logged_user.get_id())
-    cursor.execute(update_sql)
+    update_sql = """
+        UPDATE clients
+        SET password = ?
+        WHERE id = ?
+    """
+    cursor.execute(update_sql, (new_pass, logged_user.get_id()))
     conn.commit()
 
 
