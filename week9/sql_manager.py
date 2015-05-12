@@ -49,8 +49,12 @@ def change_pass(new_pass, logged_user):
         SET password = ?
         WHERE id = ?
     """
-    cursor.execute(update_sql, (new_pass, logged_user.get_id()))
-    conn.commit()
+    if is_strong(new_pass):
+        cursor.execute(update_sql, (new_pass, logged_user.get_id()))
+        conn.commit()
+        return True
+    else:
+        return False
 
 
 def register(username, password):
@@ -76,6 +80,3 @@ def login(username, password):
         return Client(user[0], user[1], user[2], user[3])
     else:
         return False
-
-if __name__ == '__main__':
-    print(is_strong('adfa*dsf11adfadADSDsf'))
