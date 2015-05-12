@@ -100,7 +100,9 @@ def login(username, password):
     user = cursor.fetchone()
 
     if(user):
+        # TODO Move number of bruteforce attempts in settings.py
         if user['login_attempts'] > 5:
+            # TODO Move time of bruteforce protection to settings.py
             if time.time() - float(user['last_login_attempt']) < 300:
                 raise BruteForce()
             else:
