@@ -62,8 +62,12 @@ def register(username, password):
         INSERT INTO clients (username, password)
         VALUES (?, ?)
     """
-    cursor.execute(insert_sql, (username, password))
-    conn.commit()
+    if is_strong(password):
+        cursor.execute(insert_sql, (username, password))
+        conn.commit()
+        return True
+    else:
+        return False
 
 
 def login(username, password):
