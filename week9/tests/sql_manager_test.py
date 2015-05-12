@@ -36,6 +36,18 @@ class SqlManagerTests(unittest.TestCase):
         logged_user = sql_manager.login('Tester', "' OR 1 = 1 --")
         self.assertFalse(logged_user)
 
+    def test_is_strong(self):
+        short_password = "!1Asdf"
+        no_caps = "1!adfasfafsfdas"
+        no_num = "!@FAFAdfasfs"
+        no_special = "ADSDAdasdasd1312"
+        strong_pass = "!1Aaaaaa"
+        self.assertFalse(sql_manager.is_strong(short_password))
+        self.assertFalse(sql_manager.is_strong(no_caps))
+        self.assertFalse(sql_manager.is_strong(no_num))
+        self.assertFalse(sql_manager.is_strong(no_special))
+        self.assertTrue(sql_manager.is_strong(strong_pass))
+
     def test_login_wrong_password(self):
         logged_user = sql_manager.login('Tester', '123567')
         self.assertFalse(logged_user)
