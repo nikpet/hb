@@ -100,26 +100,23 @@ def login(username, password):
     user = cursor.fetchone()
 
     if(user):
-        if (time.time() - float(user['last_login_attempt'])) < 300:
-            if user['login_attempts'] > 5:
+        if user['login_attempts'] > 5:
+            if time.time() - float(user['last_login_attempt']) < 3:
+                raise BruteForce()
+            else:
+                reset_failed_login(username)
                 log_failed_login(username)
                 raise LoginFailed()
-            elif user['password'] == password:
-                reset_failed_login(username)
-                return Client(user['id'], user['username'], user['balance'],
-                              user['message'])
-            else:
-                log_failed_login(username)
-        elif user['password'] == password:
+
+        if user['password'] == password:
             reset_failed_login(username)
             return Client(user['id'], user['username'], user['balance'],
                           user['message'])
         else:
             log_failed_login(username)
-            return False
+            raise LoginFailed()
     else:
         raise LoginFailed()
-
 
 def reset_failed_login(username):
     update_sql = """
