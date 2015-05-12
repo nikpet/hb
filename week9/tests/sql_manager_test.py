@@ -61,9 +61,11 @@ class SqlManagerTests(unittest.TestCase):
     def test_change_password(self):
         logged_user = sql_manager.login('Tester', '123')
         new_password = "12345"
-        sql_manager.change_pass(new_password, logged_user)
+        self.assertFalse(sql_manager.change_pass(new_password, logged_user))
+        strong_pass = "1!Aaaaaa"
+        self.assertTrue(sql_manager.change_pass(strong_pass, logged_user))
 
-        logged_user_new_password = sql_manager.login('Tester', new_password)
+        logged_user_new_password = sql_manager.login('Tester', strong_pass)
         self.assertEqual(logged_user_new_password.get_username(), 'Tester')
 
 if __name__ == '__main__':
