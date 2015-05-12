@@ -21,21 +21,20 @@ class SqlManagerTests(unittest.TestCase):
         os.remove("bank.db")
 
     def test_register(self):
-        self.assertFalse(sql_manager.register('Dinko', '123123'))
-        self.assertTrue(sql_manager.register('Dinko', '!1Aaaaaa'))
-
-        sql_manager.cursor.execute('SELECT Count(*)  FROM clients WHERE username = (?) AND password = (?)', ('Dinko', '!1Aaaaaa'))
+        sql_manager.register('Dinko', '!1Aaaaaa')
+        sql_manager.cursor.execute('''SELECT Count(*) AS cnt
+                    FROM clients WHERE username = (?)''', ('Dinko', ))
         users_count = sql_manager.cursor.fetchone()
 
-        self.assertEqual(users_count[0], 1)
+        self.assertEqual(users_count['cnt'], 1)
 
     def test_login(self):
         logged_user = sql_manager.login('Tester', '!1Aaaaaa')
         self.assertEqual(logged_user.get_username(), 'Tester')
 
     def test_login_injection(self):
-        logged_user = sql_manager.login('Tester', "' OR 1 = 1 --")
-        self.assertFalse(logged_user)
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, 'Tester',
+                          "' OR 1 = 1 --")
 
     def test_is_strong(self):
         short_password = "!1Asdf"
@@ -50,8 +49,8 @@ class SqlManagerTests(unittest.TestCase):
         self.assertTrue(sql_manager.is_strong(strong_pass))
 
     def test_login_wrong_password(self):
-        logged_user = sql_manager.login('Tester', '123567')
-        self.assertFalse(logged_user)
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, 'Tester',
+                          '123567')
 
     def test_change_message(self):
         logged_user = sql_manager.login('Tester', '!1Aaaaaa')
@@ -71,6 +70,16 @@ class SqlManagerTests(unittest.TestCase):
 
     def test_hash_pass(self):
         self.assertNotEqual(sql_manager.hash_pass('aaaaaaaaa'), 'aaaaaaaaa')
+
+    def test_brute_force_protection(self):
+        sql_manager.register('1', '1!Aaaaaaaaa')
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, '1', 'a')
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, '1', 'a')
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, '1', 'a')
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, '1', 'a')
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, '1', 'a')
+        self.assertRaises(sql_manager.LoginFailed, sql_manager.login, '1', 'a')
+        self.assertRaises(sql_manager.BruteForce, sql_manager.login, '1', 'a')
 
 if __name__ == '__main__':
     unittest.main()
