@@ -2,10 +2,19 @@ import sqlite3
 from Client import Client
 import re
 from hashlib import sha1
+import time
 
 conn = sqlite3.connect("bank.db")
 conn.row_factory = sqlite3.Row
 cursor = conn.cursor()
+
+
+class LoginFailed(Exception):
+    pass
+
+
+class BruteForce(Exception):
+    pass
 
 
 def create_clients_table():
@@ -15,8 +24,8 @@ def create_clients_table():
                 password TEXT,
                 balance REAL DEFAULT 0,
                 message TEXT,
-                login_attempts INT DEFAULT 0,
-                last_login_attempt DATETIME DEFAULT current_timestamp
+                login_attempts INTEGER DEFAULT 0,
+                last_login_attempt TEXT DEFAULT '0'
                 )'''
 
     cursor.execute(create_query)
@@ -81,21 +90,35 @@ def register(username, password):
 
 def login(username, password):
     select_query = """
-        SELECT id, username, balance, message, login_attempts,
+        SELECT id, username, password, balance, message, login_attempts,
         last_login_attempt
         FROM clients
-        WHERE username = ? AND password = ?
+        WHERE username = ?
         LIMIT 1
     """
-    cursor.execute(select_query, (username, password))
+    cursor.execute(select_query, (username, ))
     user = cursor.fetchone()
 
     if(user):
-        return Client(user['id'], user['username'], user['balance'],
-                      user['message'])
+        if (time.time() - float(user['last_login_attempt'])) < 300:
+            if user['login_attempts'] > 5:
+                log_failed_login(username)
+                raise LoginFailed()
+            elif user['password'] == password:
+                reset_failed_login(username)
+                return Client(user['id'], user['username'], user['balance'],
+                              user['message'])
+            else:
+                log_failed_login(username)
+        elif user['password'] == password:
+            reset_failed_login(username)
+            return Client(user['id'], user['username'], user['balance'],
+                          user['message'])
+        else:
+            log_failed_login(username)
+            return False
     else:
-        log_failed_login(username)
-        return False
+        raise LoginFailed()
 
 
 def reset_failed_login(username):
@@ -104,7 +127,7 @@ def reset_failed_login(username):
         SET login_attempts = 0
         WHERE username = ?
     """
-    cursor.execute(update_sql, username)
+    cursor.execute(update_sql, (username, ))
     conn.commit()
 
 
@@ -112,8 +135,8 @@ def log_failed_login(username):
     update_sql = """
         UPDATE clients
         SET login_attempts = login_attempts + 1,
-            last_login_attempt = datetime('now')
+            last_login_attempt = ?
         WHERE username = ?
         """
-    cursor.execute(update_sql, (username, ))
+    cursor.execute(update_sql, (time.time(), username))
     conn.commit()
