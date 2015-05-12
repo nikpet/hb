@@ -1,15 +1,18 @@
 import sql_manager
+import getpass
 
 
 def main_menu():
-    print("Welcome to our bank service. You are not logged in. \nPlease register or login")
+    print("""Welcome to our bank service. You are not logged in.
+Please register or login""")
 
     while True:
         command = input("$$$>")
 
         if command == 'register':
             username = input("Enter your username: ")
-            password = input("Enter your password: ")
+            # password = input("Enter your password: ")
+            password = getpass.getpass('Enter your password:')
 
             sql_manager.register(username, password)
 
@@ -17,7 +20,8 @@ def main_menu():
 
         elif command == 'login':
             username = input("Enter your username: ")
-            password = input("Enter your password: ")
+            # password = input("Enter your password: ")
+            password = getpass.getpass('Enter your password:')
 
             logged_user = sql_manager.login(username, password)
 
