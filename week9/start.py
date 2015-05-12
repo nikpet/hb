@@ -1,5 +1,6 @@
 import sql_manager
 import getpass
+from sql_manager import LoginFailed, BruteForce
 
 
 def main_menu():
@@ -23,12 +24,16 @@ Please register or login""")
             # password = input("Enter your password: ")
             password = getpass.getpass('Enter your password:')
 
-            logged_user = sql_manager.login(username, password)
-
-            if logged_user:
-                logged_menu(logged_user)
-            else:
+            try:
+                logged_user = sql_manager.login(username, password)
+            except LoginFailed:
                 print("Login failed")
+                continue
+            except BruteForce:
+                print("Brute force attack detected")
+                continue
+
+            logged_menu(logged_user)
 
         elif command == 'help':
             print("login - for logging in!")
