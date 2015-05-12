@@ -13,7 +13,10 @@ def create_clients_table():
                 username TEXT,
                 password TEXT,
                 balance REAL DEFAULT 0,
-                message TEXT)'''
+                message TEXT
+                login_attempts INT DEFAULT 0,
+                last_login_attempt DATETIME DEFAULT current_timestamp
+                )'''
 
     cursor.execute(create_query)
 
@@ -89,3 +92,13 @@ def login(username, password):
         return Client(user[0], user[1], user[2], user[3])
     else:
         return False
+
+
+def log_failed_login(username):
+    update_sql = """
+        UPDATE clients
+        (login_attempts, last_login_attempt)
+        VALUES (login_attempts + 1, date(now))
+    """
+    cursor.execute(update_sql)
+    conn.commit
