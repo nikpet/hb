@@ -91,10 +91,21 @@ def login(username, password):
     user = cursor.fetchone()
 
     if(user):
-        return Client(user[0], user[1], user[2], user[3])
+        return Client(user['id'], user['username'], user['balance'],
+                      user['message'])
     else:
         log_failed_login(username)
         return False
+
+
+def reset_failed_login(username):
+    update_sql = """
+        UPDATE clients
+        SET login_attempts = 0
+        WHERE username = ?
+    """
+    cursor.execute(update_sql, username)
+    conn.commit()
 
 
 def log_failed_login(username):
