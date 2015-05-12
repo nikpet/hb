@@ -15,7 +15,7 @@ class SqlManagerTests(unittest.TestCase):
 
     def tearDown(self):
         sql_manager.cursor.execute('DROP TABLE clients')
-    
+
     @classmethod
     def tearDownClass(cls):
         os.remove("bank.db")
@@ -31,6 +31,10 @@ class SqlManagerTests(unittest.TestCase):
     def test_login(self):
         logged_user = sql_manager.login('Tester', '123')
         self.assertEqual(logged_user.get_username(), 'Tester')
+
+    def test_login_injection(self):
+        logged_user = sql_manager.login('Tester', "' OR 1 = 1 --")
+        self.assertFalse(logged_user)
 
     def test_login_wrong_password(self):
         logged_user = sql_manager.login('Tester', '123567')
