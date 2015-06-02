@@ -5,6 +5,9 @@ class Movie(models.Model):
     name = models.CharField(max_length=150)
     rating = models.FloatField()
 
+    def __str__(self):
+        return "{} - {}".format(self.name, self.rating)
+
 class Projection(models.Model):
     TWO_D = '2D'
     THREE_D = '3D'
@@ -18,8 +21,14 @@ class Projection(models.Model):
     datetime = models.DateTimeField()
     movie = models.ForeignKey(Movie)
 
+    def __str__(self):
+        return "{} - {} - {}".format(self.proj_type, self.datetime.strftime('%d.%m.%Y - %H:%M'), self.movie.name)
+
 class Reservation(models.Model):
     username = models.CharField(max_length=100)
-    projection = models.ManyToManyField(Projection)
+    projections = models.ManyToManyField(Projection)
     row = models.PositiveSmallIntegerField()
     col = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return "{} - {}/{} - {}".format(self.username, self.row, self.col, self.projections.all()[0].movie.name)
