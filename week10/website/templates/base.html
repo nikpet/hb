@@ -4,6 +4,9 @@
 	<title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+	<nav>
+	{% include 'menu.html' %}
+	</nav>
 	<div id="main">
 	{% block content %}{% endblock %}
 	</div>
