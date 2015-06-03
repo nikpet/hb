@@ -22,7 +22,7 @@ class Projection(models.Model):
     movie = models.ForeignKey(Movie)
 
     def __str__(self):
-        return "{} - {} - {}".format(self.proj_type, self.datetime.strftime('%d.%m.%Y - %H:%M'), self.movie.name)
+        return "{} - {}".format(self.datetime.strftime('%d-%m-%Y at %H:%M'), self.proj_type)
 
 class Reservation(models.Model):
     username = models.CharField(max_length=100)
