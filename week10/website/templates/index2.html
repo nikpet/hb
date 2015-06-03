@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Movies and Projections:</h1>
+	{% for movie, projections in movie_projections %}
+        <h2>{{movie.name}}</h2>
+        <p>Rating of the movie: {{movie.rating}}</p>
+        <strong>Projections</strong>
+        <ul>
+            {% for projection in projections %}
+                <li>{{projection}}</li>
+            {% endfor %}
+        </ul>
+	{% endfor %}
+{% endblock %}
