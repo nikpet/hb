@@ -8,7 +8,7 @@
         <strong>Projections</strong>
         <ul>
             {% for projection in projections %}
-                <li>{{projection}}</li>
+                <li>{{projection}} - <a href="{% url 'make_reservation' movie.id projection.id %}">Make reservation</a></li>
             {% endfor %}
         </ul>
 	{% endfor %}
