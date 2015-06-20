@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Make reservation</h1>
+<p>Movie: {{movie.name}}</p>
+<p>Projection: {{projection}}</p>
+<p>Choose seats:</p>
+{{form.as_p}}
+
+{% endblock %}
