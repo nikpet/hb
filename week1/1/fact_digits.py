@@ -2,13 +2,9 @@ from factorial import factorial
 
 
 def fact_digits(n):
-    result = 0
-    string_of_n = str(n)
-
-    for i in range(len(string_of_n)):
-        result = result + factorial(int(string_of_n[i]))
-
-    return result
+    if n < 10:
+        return factorial(n)
+    return fact_digits(n // 10) + factorial(n % 10)
 
 if __name__ == "__main__":
     print(fact_digits(111))
