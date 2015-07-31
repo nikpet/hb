@@ -1,9 +1,10 @@
 def is_decreasing(seq):
-    if (len(seq) < 2):
-        return True
-    for i in range(len(seq) - 1):
-        if (seq[i] <= seq[i + 1]):
+    start = seq.pop(0)
+    while seq:
+        next = seq.pop(0)
+        if start <= next:
             return False
+        start = next
     return True
 
 
