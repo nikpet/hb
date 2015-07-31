@@ -1,22 +1,18 @@
-from palindrome import palindrome
+from palindrome import palindrome as is_palindrome
+
+
+def reverse(n):
+    return int(str(n)[::-1])
 
 
 def p_score(n):
-    calculate(n, 0)
-
-
-def calculate(n, score=0):
-    if palindrome(n):
-        score = score + 1
-        print(score)
+    if is_palindrome(n):
+        return 1
     else:
-        score = score + 1
-        reverse_number = str(n)[::-1]
-        number = n + int(reverse_number)
-        calculate(number, score)
+        return 1 + p_score(n + reverse(n))
 
 
 if __name__ == '__main__':
-    p_score(121)
-    p_score(48)
-    p_score(198)
+    print(p_score(121))
+    print(p_score(48))
+    print(p_score(198))
