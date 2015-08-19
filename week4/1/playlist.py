@@ -19,8 +19,9 @@ class Playlist:
         self.volt.remove(song)
 
     def add_songs(self, song_list):
-        for song in song_list:
-            self.add_song(song)
+        self.volt += song_list
+        # for song in song_list:
+        #     self.add_song(song)
 
     def total_length(self):
         total_length = 0
@@ -83,4 +84,5 @@ class Playlist:
         return playlist
 
 if __name__ == '__main__':
-    print(Playlist.load('name.json'))
+    pass
+    # print(Playlist.load('name.json'))
