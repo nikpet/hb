@@ -19,7 +19,8 @@ class Song:
 
     def __repr__(self):
         return "Song('{}', '{}', '{}', '{}')".format(self.title, self.artist,
-                                                     self.album, self.original_length)
+                                                     self.album,
+                                                     self.original_length)
 
     def __eq__(self, other):
         return (self.title == other.title and self.artist == other.artist
