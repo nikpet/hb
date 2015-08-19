@@ -82,16 +82,6 @@ class PlaylistTest(unittest.TestCase):
     #     self.playlist.add_songs(song_list)
     #     self.playlist.pprint_playlist()
 
-    def test_save(self):
-        song_list = [self.song_a1_1, self.song_a1_2, self.song_a1_3,
-                     self.song_a2_2, self.song_a3_3]
-        self.playlist.add_songs(song_list)
-        self.playlist.save()
-
-    def tets_load(self):
-        print(Playlist.load('name.json'))
-
-
 
 if __name__ == '__main__':
     unittest.main()
